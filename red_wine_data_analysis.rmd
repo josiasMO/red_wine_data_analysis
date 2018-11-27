@@ -58,8 +58,10 @@ Output variable (based on sensory data):
 For this analysis, we are mainly looking to answer one question: **Which chemical properties influence the quality of red wines?**
 
 ```{r echo=FALSE, Load_the_Data}
-# Load the Data
+# Load the Data set into the variable wines
 wines <- read.csv("wineQualityReds.csv", sep=',')
+wines$X <- NULL # no need to keep this variable
+
 ```
 
 # Univariate Plots Section
@@ -83,66 +85,79 @@ bellow:
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE,  Univariate_Plots}
 
+# Histogram plot for the Fixed Acidity feature
 p1 <- ggplot(aes(x = fixed.acidity), data = wines) +
   geom_histogram(color = I('black'), fill=('red'), binwidth = 1) +
   ylab("Count") +
   xlab("Fixed Acidity")
 
+# Histogram plot for the Volatile Acidity feature
 p2 <- ggplot(aes(x = volatile.acidity), data = wines) +
   geom_histogram(color = I('black'), fill=('red'), binwidth = 0.1) +
   ylab("Count") +
   xlab("Volatile Acidity")
 
+# Histogram plot for the Citric Acid feature
 p3 <- ggplot(aes(x = citric.acid), data = wines) +
   geom_histogram(color = I('black'), fill=('red'), binwidth = 0.08) +
   ylab("Count") +
   xlab("Citric Acidity")
 
+# Histogram plot for the Residual Sugar feature
 p4 <- ggplot(aes(x = residual.sugar), data = wines) +
   geom_histogram(color = I('black'), fill=('red')) +
   ylab("Count") +
   xlab("Residual Sugar")
 
+# Histogram plot for the Chlorides feature
 p5 <- ggplot(aes(x = chlorides), data = wines) +
   geom_histogram(color = I('black'), fill=('red')) +
   ylab("Count") +
   xlab("Chlorides")
 
+# Histogram plot for the Free Sulfur Dioxide feature
 p6 <- ggplot(aes(x = free.sulfur.dioxide), data = wines) +
   geom_histogram(color = I('black'), fill=('red'), binwidth = 5) +
   ylab("Count") +
   xlab("Free SO2")
 
+# Histogram plot for the Total Sulfur Dioxide feature
 p7 <- ggplot(aes(x = total.sulfur.dioxide), data = wines) +
   geom_histogram(color = I('black'), fill=('red')) +
   ylab("Count") +
   xlab("Total SO2")
 
+# Histogram plot for the Density feature
 p8 <- ggplot(aes(x = density), data = wines) +
   geom_histogram(color = I('black'), fill=('red')) +
   ylab("Count") +
   xlab("Density")
 
+# Histogram plot for the pH feature
 p9 <- ggplot(aes(x = pH), data = wines) +
   geom_histogram(color = I('black'), fill=('red')) +
   ylab("Count") +
   xlab("pH")
 
+# Histogram plot for the Sulphates feature
 p10 <- ggplot(aes(x = sulphates), data = wines) +
   geom_histogram(color = I('black'), fill=('red')) +
   ylab("Count") +
   xlab("Sulphates")
 
+# Histogram plot for the Alcohol feature
 p11 <- ggplot(aes(x = alcohol), data = wines) +
   geom_histogram(color = I('black'), fill=('red')) +
   ylab("Count") +
   xlab("Alcohol")
 
+# Histogram plot for the Fixed Acidity feature
 p12 <- ggplot(aes(x = quality), data = wines) +
   geom_histogram(color = I('black'), fill=('red'), binwidth = 0.5) +
   ylab("Count") +
   xlab("Quality")
 
+# Arrange the plot in a matrix 4x3
 grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, ncol=3)
 
 ```
@@ -177,6 +192,127 @@ classify the wine properties into of the one distributions mentioned above:
 Sulphates, Alcohol, Residual sugar and Chlorides;
 - Left skewed distribution: None;
 
+### Applying Log Scale to the distribution
+
+One interest transformation in the data that helps to "normalize" a distribution
+it's the application of the log scale to the data:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, Histograms_Log_Plot}
+# Histogram plot for the Fixed Acidity feature
+p1 <- ggplot(aes(x = log(wines$fixed.acidity)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Fixed Acidity)")
+
+# Histogram plot for the Volatile Acidity feature
+p2 <- ggplot(aes(x = log(wines$volatile.acidity)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Volatile Acidity)")
+
+# Histogram plot for the Citric Acid feature
+p3 <- ggplot(aes(x = log(wines$citric.acid)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Citric Acidity)")
+
+# Histogram plot for the Residual Sugar feature
+p4 <- ggplot(aes(x = log(wines$residual.sugar)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Residual Sugar)")
+
+# Histogram plot for the Chlorides feature
+p5 <- ggplot(aes(x = log(wines$chlorides)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Chlorides)")
+
+# Histogram plot for the Free Sulfur Dioxide feature
+p6 <- ggplot(aes(x = log(wines$free.sulfur.dioxide)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Free SO2)")
+
+# Histogram plot for the Total Sulfur Dioxide feature
+p7 <- ggplot(aes(x = log(wines$total.sulfur.dioxide)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Total SO2)")
+
+# Histogram plot for the Density feature
+p8 <- ggplot(aes(x = log(wines$density)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Density)")
+
+# Histogram plot for the pH feature
+p9 <- ggplot(aes(x = log(wines$pH)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(pH)")
+
+# Histogram plot for the Sulphates feature
+p10 <- ggplot(aes(x = log(wines$sulphates)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Sulphates)")
+
+# Histogram plot for the Alcohol feature
+p11 <- ggplot(aes(x = log(wines$alcohol)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Alcohol)")
+
+# Histogram plot for the Fixed Acidity feature
+p12 <- ggplot(aes(x = log(wines$quality)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Quality)")
+
+# Arrange the plot in a matrix 4x3
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, ncol=3)
+
+```
+
+If we look closer to a couple variables, like the Total SO2 and density, we can
+see how the log scale helps to normalize the variables: 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, Histograms_Log_Plot_2}
+
+# Histogram plot for the Total Sulfur Dioxide feature
+pa1 <- ggplot(aes(x = total.sulfur.dioxide), data = wines) +
+  geom_histogram(color = I('black'), fill=('red')) +
+  ylab("Count") +
+  xlab("Total SO2")
+
+# Histogram plot for the LOG Total Sulfur Dioxide feature
+pa2 <- ggplot(aes(x = log(wines$total.sulfur.dioxide)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Total SO2)")
+
+# Histogram plot for the Density feature
+pb1 <- ggplot(aes(x = density), data = wines) +
+  geom_histogram(color = I('black'), fill=('red')) +
+  ylab("Count") +
+  xlab("Density")
+# Histogram plot for the LOG of Density feature
+pb2 <- ggplot(aes(x = log(wines$density)), data = wines) +
+  geom_histogram(color = I('black'), fill=('green')) +
+  ylab("Count") +
+  xlab("Log(Density)")
+
+
+
+grid.arrange(pa1, pa2, pb1, pb2, ncol=2)
+```
+
+As we can see, for the Total SO2, which corresponds to a Right skewed 
+distribution, when we apply the log function we can see the shape of a normal
+distribution. In the other hand, the density that corresponds to a normal 
+distribution, doesn't loses its shape, and we get a more smooth distribution
+with less bumps in the shape.
 
 # Bivariate Plots Section
 
@@ -185,14 +321,18 @@ Sulphates, Alcohol, Residual sugar and Chlorides;
 To have a quick look over the correlation between two features, it's possible to
 plot a matrix of plots and values. This plot is showed bellow:
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, Matrix_Plot}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=9, fig.height=9, Matrix_Plot}
 
 # sample 500 wines from the data set
 set.seed(1000)
-wines_samp <- wines[sample(1:length(wines$X), 500), ]
+wines_samp <- wines[sample(1:length(wines$chlorides), 500), ]
+
+# Generates the matrix pl
 ggpairs(wines_samp,
         lower = list(continuous = wrap("points", shape = I('.'))), 
-        upper = list(combo = wrap("box", outlier.shape = I('.'), size = 1)))
+        upper = list(combo = wrap("box", outlier.shape = I('.'), size = 1))) +
+  theme(text = element_text(size=8), 
+     axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size=7))
 
 ```
 
@@ -211,194 +351,322 @@ The plots and calculation are showed bellow:
 
 ### Variable Analysis: Fixed Acidity
 
+In this section, we are going to analyse the variable Fixed Acidity against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation. 
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Fixed_Acidity}
 
+# Adds a new discrete variable to the dataset based on the wine's quality
 wines$grade_number<-cut(wines$quality, 
                           c(2.5,3.5,4.5,5.5,6.5,7.5,8.5),
                           labels=c('3','4','5','6','7','8'))
 
+# Calculates the correlation between the quality and fixed.acidity
 cor.test(wines$quality, wines$fixed.acidity, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = fixed.acidity), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Fixed Acidity")
 
-ggplot(wines, aes(x=grade_number, y=fixed.acidity, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=fixed.acidity)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Fixed Acidity")
 
 ```
 
+We got a small correlation between the variables, while the scatter plot and the
+boxplot shows that the data is really spread as expected because of the 
+value for the correlation that was obtained.
+
 ### Variable Analysis: Volatile Acidity
+
+In this section, we are going to analyse the variable Volatile Acidity against 
+the Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Volatile_Acidity}
 
+# Calculates the correlation between the quality and volatile.acidity
 cor.test(wines$quality, wines$volatile.acidity, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = volatile.acidity), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Volatile Acidity")
 
-ggplot(wines, aes(x=grade_number, y=volatile.acidity, fill=grade_number)) + 
-  geom_boxplot(outlier.shape=8, outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=volatile.acidity)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Volatile Acidity")
 
 ```
 
+We got a medium negative correlation between the variables, while the scatter 
+plot and the boxplot shows that the data is not so spread, as expected because 
+from the value for the correlation that was obtained.
+
 ### Variable Analysis: Citric Acid
+
+In this section, we are going to analyse the variable Citric Acid against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Citric_Acid}
 
+# Calculates the correlation between the quality and citric.acid
 cor.test(wines$quality, wines$citric.acid, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = citric.acid), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Citric Acid")
 
-ggplot(wines, aes(x=grade_number, y=citric.acid, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=citric.acid)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Citric Acid")
 
 ```
 
+We got a small to medium correlation between the variables. The boxplot shows 
+that the data is considerable spread.
+
+
 ### Variable Analysis: Residual Sugar
+
+In this section, we are going to analyse the variable Residual Sugar against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Residual_Sugar}
 
+# Calculates the correlation between the quality and residual.sugar
 cor.test(wines$quality, wines$residual.sugar, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = residual.sugar), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Residual Sugar")
 
-ggplot(wines, aes(x=grade_number, y=residual.sugar, fill=grade_number)) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=residual.sugar)) + 
   geom_boxplot(outlier.size=2) + 
   ggtitle("Wine Quality x Residual Sugar")
 
 ```
+We got a very small correlation between the variables. The scatter plot and box 
+plot shows that between this two variables there isn't a big variation in the 
+data, even that there are several outliers in the data.
 
 ### Variable Analysis: Chlorides
 
+In this section, we are going to analyse the variable Chlorides against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation. 
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Chlorides}
 
+# Calculates the correlation between the quality and chlorides
 cor.test(wines$quality, wines$chlorides, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = chlorides), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Chlorides")
 
-ggplot(wines, aes(x=grade_number, y=chlorides, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=chlorides)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Chlorides")
 
 ```
 
+We got a small correlation between the variables. The scatter plot and box 
+plot shows that between this two variables there isn't a big variation in the 
+data, even that there are several outliers in the data.
+
 ### Variable Analysis: Free Sulfur Dioxide
+
+In this section, we are going to analyse the variable Free Sulfur Dioxide 
+against the Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Free_Sulfur_Dioxide}
 
+# Calculates the correlation between the quality and free.sulfur.dioxide
 cor.test(wines$quality, wines$free.sulfur.dioxide, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = free.sulfur.dioxide), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Free SO2")
 
-ggplot(wines, aes(x=grade_number, y=free.sulfur.dioxide, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=free.sulfur.dioxide)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Free SO2")
 
 ```
 
+We got a very small correlation between the variables. The scatter plot and box 
+plot shows that between this two variables there's a good amount of variation in
+the data.
+
 ### Variable Analysis: Total Sulfur Dioxide
+
+In this section, we are going to analyse the variable Total Sulfur Dioxide
+against the Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Total_Sulfur_Dioxide}
 
+# Calculates the correlation between the quality and total.sulfur.dioxide
 cor.test(wines$quality, wines$total.sulfur.dioxide, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = total.sulfur.dioxide), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Total SO2")
 
-ggplot(wines, aes(x=grade_number, y=total.sulfur.dioxide, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=total.sulfur.dioxide)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Total SO2")
 
 ```
 
+We got a small correlation between the variables. 
+
 ### Variable Analysis: Density
+
+In this section, we are going to analyse the variable Density against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Density}
 
+# Calculates the correlation between the quality and density
 cor.test(wines$quality, wines$density, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = density), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Density") 
 
-ggplot(wines, aes(x=grade_number, y=density, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=density)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Density")
 
 ```
 
+We got a small correlation between the variables. The scatter plot and box 
+plot shows that between this two variables a few negative and positive outliers 
+in the data.
+
 ### Variable Analysis: pH
+
+In this section, we are going to analyse the variable pH against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation. 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_pH}
 
+# Calculates the correlation between the quality and pH
 cor.test(wines$quality, wines$pH, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = pH), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x pH")
 
-ggplot(wines, aes(x=grade_number, y=pH, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=pH)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x pH")
 
 ```
 
+We got a very small correlation between the variables. 
+
 ### Variable Analysis: Sulphates
+
+In this section, we are going to analyse the variable Sulphates against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Sulphates}
 
+# Calculates the correlation between the quality and sulphates
 cor.test(wines$quality, wines$sulphates, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = sulphates), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Sulphates")
 
-ggplot(wines, aes(x=grade_number, y=sulphates, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=sulphates)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Sulphates")
 
 ```
 
+We got a small correlation between the variables. The scatter plot and box 
+plot shows a small positive correlation between the variables.
+
 ### Variable Analysis: Alcohol
+
+In this section, we are going to analyse the variable Alcohol against the
+Wine's quality. First we calculate the correlation between the two variables
+followed by a Scatter plot with a smoothed means and a box plot to analyse the 
+data variation.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots_Alcohol}
 
+# Calculates the correlation between the quality and alcohol
 cor.test(wines$quality, wines$alcohol, method = 'pearson')
 
+# Scattered plot and a smoothed conditional means plot 
 ggplot(aes(x = quality, y = alcohol), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
   ggtitle("Wine Quality x Alcohol")
 
-ggplot(wines, aes(x=grade_number, y=alcohol, fill=grade_number)) + 
-  geom_boxplot(outlier.size=2) + 
+# Box plot to analyse the data variation
+ggplot(wines, aes(x=grade_number, y=alcohol)) + 
+  geom_boxplot(outlier.size=2, color="darkblue") + 
   ggtitle("Wine Quality x Alcohol")
 
 ```
+
+We got a medium correlation between the variables. The scatter plot and box 
+plot shows that between this two variables there a medium Positive correlation.
+This is the strongest correlation between a feature and the wine's quality that
+we got in the dataset. 
 
 # Bivariate Analysis
 
@@ -443,11 +711,18 @@ correlation with the Wine Quality, which from the table above are, `alcohol`,
 
 ### alcohol X volatile.acid X quality:
 
+Multivariate analysis of the variables of interest that were selected after the 
+calculation of the correlation. In this plot we see alcohol X volatile.acid X 
+quality:
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Multivariate_Plots_1}
 
+# Plots the alcohol X volatile.acidity, adding another layer to the plot with 
+# the color of the points being the grade_number that's basically the quality.
+# Also add a smoothed conditional means of the plot's points . 
 ggplot(aes(x = volatile.acidity, y = alcohol, 
            color = grade_number), data = wines) + 
-  geom_point(alpha = 0.5, size = 1, position = 'jitter') +
+  geom_point(position = 'jitter') +
   scale_color_brewer(type = 'div',
                      guide = guide_legend(title = 'Quality', reverse = T,
                                     override.aes = list(alpha = 1, size = 2))) +
@@ -455,16 +730,24 @@ ggplot(aes(x = volatile.acidity, y = alcohol,
   xlim(c(0.3, 1.2))
   ggtitle('Alcohol x Volatile Acidity by Quality color')
 
+# Calculates the correlation between the alcohol and volatile.acidity
 cor.test(wines$volatile.acidity, wines$alcohol, method = 'pearson')
 
 ```
 
 ### alcohol X sulphates X quality:
 
+Multivariate analysis of the variables of interest that were selected after the 
+calculation of the correlation. In this plot we see alcohol X sulphates X 
+quality:
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Multivariate_Plots_2}
 
+# Plots the alcohol X sulphates, adding another layer to the plot with 
+# the color of the points being the grade_number that's basically the quality.
+# Also add a smoothed conditional means of the plot's points .
 ggplot(aes(x = sulphates, y = alcohol, color = grade_number), data = wines) + 
-  geom_point(alpha = 0.5, size = 1, position = 'jitter') +
+  geom_point( position = 'jitter') +
   scale_color_brewer(type = 'div',
                      guide = guide_legend(title = 'Quality', reverse = T,
                                   override.aes = list(alpha = 1, size = 2))) +
@@ -472,33 +755,49 @@ ggplot(aes(x = sulphates, y = alcohol, color = grade_number), data = wines) +
   xlim(c(0.3,1.2)) +
   ggtitle('Alcohol x Sulphates by Quality color')
 
+# Calculates the correlation between the alcohol and sulphates
 cor.test(wines$sulphates, wines$alcohol, method = 'pearson')
 
 ```
 
 ### alcohol X citric.acid X quality:
 
+Multivariate analysis of the variables of interest that were selected after the 
+calculation of the correlation. In this plot we see alcohol X citric.acid X 
+quality:
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Multivariate_Plots_3}
 
+# Plots the alcohol X citric.acid, adding another layer to the plot with 
+# the color of the points being the grade_number that's basically the quality.
+# Also add a smoothed conditional means of the plot's points .
 ggplot(aes(x = citric.acid, y = alcohol, color = grade_number), data = wines) + 
-  geom_point(alpha = 0.5, size = 1, position = 'jitter') +
+  geom_point(position = 'jitter') +
   scale_color_brewer(type = 'div',
                      guide = guide_legend(title = 'Quality', reverse = T,
                                     override.aes = list(alpha = 1, size = 2))) +
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "black")+
   ggtitle('Alcohol x Citric Acid by Quality color')
 
+# Calculates the correlation between the alcohol and citric.acid
 cor.test(wines$citric.acid, wines$alcohol, method = 'pearson')
 
 ```
 
 ### volatile.acidity X sulphates X quality:
 
+Multivariate analysis of the variables of interest that were selected after the 
+calculation of the correlation. In this plot we see volatile.acidity X sulphates
+X quality:
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Multivariate_Plots_4}
 
+# Plots the volatile.acidity X sulphates, adding another layer to the plot with 
+# the color of the points being the grade_number that's basically the quality.
+# Also add a smoothed conditional means of the plot's points .
 ggplot(aes(x = sulphates, y = volatile.acidity,
            color = grade_number), data = wines) + 
-  geom_point(alpha = 0.5, size = 1, position = 'jitter') +
+  geom_point(position = 'jitter') +
   scale_color_brewer(type = 'div',
                      guide = guide_legend(title = 'Quality', reverse = T,
                                     override.aes = list(alpha = 1, size = 2))) +
@@ -506,17 +805,25 @@ ggplot(aes(x = sulphates, y = volatile.acidity,
   xlim(c(0.3, 1.2)) + 
   ggtitle(' Volatile Acidity X Sulphates by Quality color')
 
+# Calculates the correlation between the sulphates and volatile.acidity
 cor.test(wines$sulphates, wines$volatile.acidity, method = 'pearson')
 
 ```
 
 ### volatile.acidity X citric.acid X quality:
 
+Multivariate analysis of the variables of interest that were selected after the 
+calculation of the correlation. In this plot we see volatile.acidity X 
+citric.acid X quality:
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Multivariate_Plots_5}
 
+# Plots the volatile.acidity X citric.acid, adding another layer to the plot 
+# with the color of the points being the grade_number that's basically the 
+# quality. Also add a smoothed conditional means of the plot's points .
 ggplot(aes(x =  volatile.acidity, y = citric.acid,
            color = grade_number), data = wines) + 
-  geom_point(alpha = 0.5, size = 1, position = 'jitter') +
+  geom_point(position = 'jitter') +
   scale_color_brewer(type = 'div',
                      guide = guide_legend(title = 'Quality', reverse = T,
                                   override.aes = list(alpha = 1, size = 2))) +
@@ -524,17 +831,25 @@ ggplot(aes(x =  volatile.acidity, y = citric.acid,
   ylim(c(-0.1, 0.8)) + 
   ggtitle(' Volatile Acidity X Citric Acid by Quality color')
 
+# Calculates the correlation between the citric.acid and volatile.acidity
 cor.test(wines$citric.acid, wines$volatile.acidity, method = 'pearson')
 
 ```
 
 ### sulphates X citric.acid X quality:
 
+Multivariate analysis of the variables of interest that were selected after the 
+calculation of the correlation. In this plot we see sulphates X citric.acid X 
+quality:
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, Multivariate_Plots_6}
 
+# Plots the citric.acid X sulphates, adding another layer to the plot with 
+# the color of the points being the grade_number that's basically the quality.
+# Also add a smoothed conditional means of the plot's points .
 ggplot(aes(x = sulphates, y = citric.acid, 
            color = grade_number), data = wines) + 
-  geom_point(alpha = 0.5, size = 1, position = 'jitter') +
+  geom_point(position = 'jitter') +
   scale_color_brewer(type = 'div',
                      guide = guide_legend(title = 'Quality', reverse = T,
                                     override.aes = list(alpha = 1, size = 2))) +
@@ -542,6 +857,7 @@ ggplot(aes(x = sulphates, y = citric.acid,
   xlim(c(0.3, 1.2)) +
   ggtitle('Sulphates X Citric Acid by Quality color')
 
+# Calculates the correlation between the sulphates and citric.acid
 cor.test(wines$citric.acid, wines$sulphates, method = 'pearson')
 
 ```
@@ -591,28 +907,43 @@ that strong, I couldn't see a clear combination to the wine `quality`;
 
 ### Plot One
 
-```{r echo=FALSE, Plot_One}
+This plot analyzes the variable Volatile Acidity against the Wine's quality. 
+This plots was choosen because it shows de correlation of the two variables
+and the scattered means of this relation.
 
+```{r echo=FALSE, Plot_One}
+# Scattered plot and a smoothed conditional means plot  of the wine's quality X
+# the volatile.acidity
 ggplot(aes(x = quality, y = volatile.acidity), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
-  ggtitle("Wine Quality x Volatile Acidity")
+  ggtitle("Wine Quality x Volatile Acidity") +
+  ylab(expression(Volatile~Acidity~(g/dm^{3}))) +
+  xlab(expression(Quality))
 
 ```
 
 ### Description One
 
 This plot showed the negative correlation between the `volatile.acidity` and the
-wine `quality`. 
+wine `quality`. This correlation was also obtained in a previous session of this
+work. 
 
 ### Plot Two
 
-```{r echo=FALSE, Plot_Two}
+In this plot we analyse dthe variable Alcohol against the Wine's quality. 
+This plot is very important because it shows the relation of the most important 
+feature in the dataset to the quality variable.
 
+```{r echo=FALSE, Plot_Two}
+# Scattered plot and a smoothed conditional means plot  of the wine's quality X
+# the alcohol
 ggplot(aes(x = quality, y = alcohol), data = wines) +
   geom_point(alpha=0.1,  position = position_jitter(h=0), color = 'black') + 
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "red") +
-  ggtitle("Wine Quality x Alcohol")
+  ggtitle("Wine Quality x Alcohol") + 
+  ylab("Alcohol (% by volume)") +
+  xlab(expression(Quality))
 
 ```
 
@@ -620,12 +951,20 @@ ggplot(aes(x = quality, y = alcohol), data = wines) +
 
 This plot showed the correlation between the feature `alcohol` and the wine 
 `quality`. This plot was really important to verify the correlation between the 
-variable and the quakity, with the biggest value of the correlation.
+variable and the quality, with the biggest value of the correlation. So from the
+analysis of this plot was possible to see that this was the strongest relation.
 
 ### Plot Three
 
+Multivariate analysis of the variables of interest that were selected after the 
+calculation of the correlation. In this plot we see volatile.acidity X 
+citric.acid X quality:
+
 ```{r echo=FALSE, Plot_Three}
 
+# Plots the volatile.acidity X citric.acid, adding another layer to the plot 
+# with the color of the points being the grade_number that's basically the 
+# quality. Also add a smoothed conditional means of the plot's points .
 ggplot(aes(x =  volatile.acidity, y = citric.acid,
            color = grade_number), data = wines) + 
   geom_point(alpha = 0.5, size = 1, position = 'jitter') +
@@ -633,7 +972,9 @@ ggplot(aes(x =  volatile.acidity, y = citric.acid,
                      guide = guide_legend(title = 'Quality', reverse = T,
                                   override.aes = list(alpha = 1, size = 2))) +
   geom_smooth(aes(fill= "Smoothed means"), method = "lm", color = "black") +
-  ggtitle(' Volatile Acidity X Citric Acid by Quality color')
+  ggtitle('Volatile Acidity X Citric Acid by Quality color') +
+  xlab(expression(Volatile~Acidity~(g/dm^{3}))) +
+  ylab(expression(Citric~Acid~(g/dm^{3})))
 
 ```
 
@@ -666,3 +1007,18 @@ the more relevant to the wine quality. I thought it would be `pH` and
 wine's quality. To me this showed how important is Exploratory Data Analysis to
 have a clear undertanding of informations and that guesses can be completely 
 wrong from the actual information contained in data.
+
+Personally, this project was a great challenge to me. I never used R before this 
+class, but I got the hang of it. The challenge to know how to use this language
+in a way that I could extract meaningfull information from data in a way that I
+could show to people that don't understand about Computing. It was hard to 
+decide which plot would be better in each case, but I'm satisfied with my work 
+and more confident that I can actually work with it.
+
+For future work, I'm thinking on starting Financial Data about the stocks
+market. It's a topic that calls my attention and that I think Data Science can 
+be a really powerfull tool.
+
+
+
+
